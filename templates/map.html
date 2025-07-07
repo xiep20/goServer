@@ -1,0 +1,95 @@
+<!--
+ * @Author: yehuaiyu yehuaiyu@foxmail.com
+ * @Date: 2023-09-08 15:21:11
+ * @LastEditors: xieping
+ * @LastEditTime: 2023-09-08 17:18:22
+ * @FilePath: \cesium\Apps\HelloWorld.html
+ * @Description: 
+ * 
+ * Copyright (c) 2023 by PIESAT, All Rights Reserved. 
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Use correct character set. -->
+  <meta charset="utf-8" />
+  <!-- Tell IE to use the latest, best version. -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+  <title>Hello World!</title>
+  <script src="/static/Cesium/Cesium.js"></script>
+  <style>
+    @import url(/static/Cesium/Widgets/widgets.css);
+
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="cesiumContainer"></div>
+  <script>
+    // const viewer = new Cesium.Viewer("cesiumContainer");
+    let viewer = new Cesium.Viewer('cesiumContainer', {
+      infoBox: false, // If set to false, the InfoBox widget will not be created.
+    });
+
+
+
+    // var tileset = viewer.scene.primitives.add(new Cesium.Cesium3DTileset({
+    //     url: '../data/3dtiles/tianjie/tileset.json', //数据地址
+    // }));
+
+    var tile3d = new Cesium.Cesium3DTileset({
+      url: 'http://192.168.192.215:8021/ware/upload/%E6%B2%A7%E5%B7%9E%E6%B8%AF%E8%A5%BF/%E6%B2%A7%E5%B7%9E%E6%B8%AF%E8%A5%BF/merge_tile.json',
+      
+      // url: '/static/changju/tileset.json',
+      //url: './data/3dtiles1_cesiumLab/tileset.json',
+    });
+    viewer.scene.primitives.add(tile3d);
+    // //     //wff改变模型位置
+    // //     // p.readyPromise.then(tileset => {
+    // //     //   // 相机视角移动到模型位置
+    // //     //   viewer.flyTo(tileset);
+    // //     // });
+
+    viewer.flyTo(tile3d);
+
+
+
+
+
+
+    // const tileset = viewer.scene.primitives.add(
+    //   new Cesium.Cesium3DTileset({
+    //     url: 'http://192.168.192.215:8021/ware/upload/%E6%B2%A7%E5%B7%9E%E6%B8%AF%E8%A5%BF/%E6%B2%A7%E5%B7%9E%E6%B8%AF%E8%A5%BF/merge_tile.json'
+    //   })
+    // )
+    // viewer.zoomTo(
+    //   tileset,
+    //   new Cesium.HeadingPitchRange(
+    //     0.0,
+    //     -0.5,
+    //     tileset.boundingSphere.radius * 2.0
+    //   )
+    // );
+    // // tileset.readyPromise.then(() => {
+    // //     viewer.scene.primitives.lowerToBottom(tileset)
+    // //     const boundingSphere = tileset.boundingSphere
+    // //     viewer.camera.viewBoundingSphere(boundingSphere, new this.Cesium.HeadingPitchRange(0.0, -0.5, boundingSphere.radius))
+    // //     viewer.camera.lookAtTransform(this.Cesium.Matrix4.IDENTITY)
+    // //   })
+  </script>
+</body>
+
+</html>

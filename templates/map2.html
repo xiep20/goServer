@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title></title>
+  <script src="./Cesium/Cesium.js"></script>
+
+  <script src="https://unpkg.com/@turf/turf/turf.min.js"></script>
+  <style>
+    @import url(./Cesium/Widgets/widgets.css);
+
+    .btn_line {
+      position: absolute;
+      top: 20px;
+      left: 30px;
+      width: 50px;
+      height: 30px;
+      line-height: 30px;
+      background-color: #0e539499;
+      border-radius: 5px;
+      text-align: center;
+      color: #fff;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="cesiumContainer"></div>
+  <div class="btn_line" onClick="demoline()">线</div>
+  <script>
+    var viewer;
+    var drawControl;
+    var road;
+    let llll = {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [114.37169679640347, 30.483518218936656],
+          [114.37022355466874, 30.48991653867099],
+          [114.37006747656626, 30.490913605102605],
+          [114.37028485157524, 30.491681033375098],
+          [114.37133675194131, 30.49328766741138],
+          [114.37169656625595, 30.494066041451937],
+          [114.3719047342563, 30.49469174338189],
+          [114.37175327454433, 30.496895461776386],
+          [114.3717805679946, 30.498093208517066],
+          [114.3723398005309, 30.49894520138387],
+          [114.37339158743373, 30.499937612987193],
+          [114.37389522272254, 30.500482630465353],
+          [114.37473875056281, 30.502797429559617]
+        ]
+      }
+    };
+
+
+    initMap();
+
+    //初始化地图
+    function initMap() {
+      Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJjYTJjNTM1Yy0wZDRjLTRlZWYtYTFkMi1hOGIwNTI2ZGU0MDgiLCJpZCI6ODI5MjAsImlhdCI6MTY0NTE2NDEyOH0.XndixRDpLnRAxnqSNQpT2JofpGyngIUWlmzbG53hEtM';
+      //初始化地图
+      viewer = new Cesium.Viewer("cesiumContainer", {
+        infoBox: false
+      })
+
+      //相机视角
+      viewer.camera.setView({
+        destination: new Cesium.Cartesian3(-2269853.2005088474, 5010873.906834066, 3217319.352526568),
+        orientation: {
+          heading: 0.2608349245802053,
+          pitch: -0.28008964423867,
+          roll: 0.0007874235373739324
+        }
+      });
+    }
+
+    function demoline() {
+      var offsetLine1 = turf.lineOffset(llll, 0.01, { units: 'kilometers' });
+      var offsetLine2 = turf.lineOffset(llll, -0.01, { units: 'kilometers' });
+
+
+      var bbbb1 = offsetLine1["geometry"]["coordinates"]
+      var bbbb2 = offsetLine2["geometry"]["coordinates"]
+      var kkkk1 = [];
+      kkkk1 = [].concat.apply([], bbbb1)
+      for (let i = bbbb2.length - 1; i >= 0; i--) {
+        kkkk1.push(bbbb2[i][0], bbbb2[i][1])
+      }
+
+      viewer.entities.add({
+        name: '基本面',
+        polygon: {
+          hierarchy: new Cesium.PolygonHierarchy(Cesium.Cartesian3.fromDegreesArray(kkkk1)),
+          material: Cesium.Color.YELLOW.withAlpha(0.4),
+          classificationType: Cesium.ClassificationType.BOTH,
+        }
+      });
+
+      viewer.entities.add({
+        name: '基本线',
+        polyline: {
+          positions: Cesium.Cartesian3.fromDegreesArray([].concat.apply([], llll.geometry.coordinates)),
+          width: 2,
+          material: Cesium.Color.BEIGE,
+          clampToGround: true
+        }
+      });
+    }
+
+
+  </script>
+</body>
+
+</html>
